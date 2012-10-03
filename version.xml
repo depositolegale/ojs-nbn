@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE version SYSTEM "../../../lib/pkp/dtd/pluginVersion.dtd">
+
+<!--
+  * plugins/pubIds/nbn/version.xml
+  *
+  * Copyright (c) 2003-2012 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  *
+  * Plugin version information.
+  -->
+<version>
+	<application>nbn</application>
+	<type>plugins.pubIds</type>
+	<release>1.0.0.0</release>
+	<date>2011-11-22</date>
+   <lazy-load>1</lazy-load>
+   <class>NBNPubIdPlugin</class>   
+</version>
