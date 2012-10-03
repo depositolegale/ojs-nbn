@@ -2,6 +2,8 @@ OJS NBN:IT
 ===========
 Plugin per l'assegnazione automatica di identificatori [urn:nbn](http://www.depositolegale.it/national-bibliography-number/) nel namespace NBN:IT agli articoli pubblicati con [Open Journal Systems](http://pkp.sfu.ca/?q=ojs).
 
+**Il plugin e' compatibile con OJS versione 2.4.x**.
+
 Funzionalita'
 ------------
 1. Aggiunge due tabelle al db per permettere la registrazione degli NBN;
