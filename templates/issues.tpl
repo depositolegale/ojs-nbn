@@ -2,6 +2,7 @@
  * @file plugins/pubIds/nbn/templates/issues.tpl
  *
  * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Select issues for registration.

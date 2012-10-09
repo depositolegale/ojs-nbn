@@ -2,41 +2,24 @@ OJS NBN:IT
 ===========
 Plugin per l'assegnazione automatica di identificatori [urn:nbn](http://www.depositolegale.it/national-bibliography-number/) nel namespace NBN:IT agli articoli pubblicati con [Open Journal Systems](http://pkp.sfu.ca/?q=ojs).
 
-**Il plugin e' compatibile con OJS versione 2.4.x**.
-
 Funzionalita'
-------------
+-------------
 1. Aggiunge due tabelle al db per permettere la registrazione degli NBN;
 2. Crea un'interfaccia di registrazione degli NBN accessibile all'amministratore della rivista;
+3. Stabilisce un dialogo con le API di Magazzini Digitali. Prima di essere abilitati all'utilizzo della API deve essere inoltrata richiesta di abilitazione di un account di accesso al servizio NBN (v sotto).
 3. Modifica il template della pagina di presentazione dell'articolo e dell'interfaccia oai-pmh per visualizzare i NBN registrati.
+
+Requisiti di sistema
+--------------------
+1. OJS versione 2.4.0 o superiore
+2. Estensione PHP 'curl' installata
+3. Estensione PHP 'dom' installata 
 
 Installazione  
 -------------
 L'installazione prevede due step:
-1. Lanciare lo script di creazione delle tabelle *nbn_journal_subnamespace* e *nbn_assigned_string*:
-2. utilizzare la funzione OJS di installazione plugin per caricare i file su server
-
-
-	CREATE TABLE nbn_journal_subnamespace
-	(
-	  journal_id bigint NOT NULL,
-	  subnamespace character varying(255),
-	  CONSTRAINT nbn_journal_subnamespace_pkey PRIMARY KEY (journal_id )
-	)
-	WITH (
-	  OIDS=FALSE
-	);
-
-	CREATE TABLE nbn_assigned_string
-	(
-	  article_id bigint NOT NULL,
-	  journal_id bigint NOT NULL,
-	  assigned_string character varying(255),
-	  CONSTRAINT nbn_assigned_string_pkey PRIMARY KEY (article_id )
-	)
-	WITH (
-	  OIDS=FALSE
-	);
+1. Apportare le modifiche al DB descritte nel file schema.xml
+2. Caricare i file sul server utilizzando l'apposito modulo di OJS dedicato all'installazione dei plugin (il plugin deve essere in formato compresso .tar.gz)
 
 Credenziali
 -----------

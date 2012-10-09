@@ -2,6 +2,7 @@
  * @file plugins/pubIds/nbn/templates/articles.tpl
  *
  * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Select articles for registration.
@@ -24,9 +25,15 @@
 {/literal}</script>
 
 <br/>
+   {if $registeredFilterChecked}                        
+      {assign var="filterChecked" value=true}
+   {else}
+      {assign var="filterChecked" value=false}
+   {/if} 
 <form method="post" id="submit" action="{plugin_url path="articles"}">
    <input type="hidden" name="sort" value="id"/>
    <input type="hidden" name="sortDirection" value="ASC"/>
+   <input type="hidden" name="registeredFilterChecked" value="{$filterChecked}"/>
    <select name="searchField" size="1" class="selectMenu">
       {html_options_translate options=$fieldOptions selected=$searchField}
    </select>
@@ -39,10 +46,11 @@
    <input type="submit" value="{translate key="common.search"}" class="button" />
 </form>
 <br/>
-<form method="post" id="submit" action="{plugin_url path="articles"}">
+<form method="post" id="submit" action="{plugin_url path="articles"}">  
+   <input type="hidden" name="filterForm" value="true"/>
    <table width="40%" class="listing">
       <tr>
-      <td><input type="checkbox" name="registeredFilter" /></td>
+      <td><input type="checkbox" name="registeredFilter" {$registeredFilterChecked} /></td>
       <td>{translate key="plugins.pubIds.nbnit.registeredFilter"}</td>
       <td><input type="submit" value="{translate key="plugins.pubIds.nbnit.filter"}" class="button" /></td>
       </tr>
@@ -104,7 +112,7 @@
 			{else}
 				<tr>
 					<td colspan="2" align="left">{page_info iterator=$articles}</td>
-					<td colspan="4" align="right">{page_links anchor="articles" name="articles" iterator=$articles}</td>
+					<td colspan="4" align="right">{page_links anchor="articles" name="articles" iterator=$articles registeredFilterChecked=$filterChecked}</td>
 				</tr>
 			{/if}
 		</table>

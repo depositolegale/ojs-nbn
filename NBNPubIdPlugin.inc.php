@@ -4,6 +4,7 @@
  * @file plugins/pubIds/nbn/NBNPubIdPlugin.inc.php
  *
  * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NBNPubIdPlugin
@@ -16,7 +17,7 @@
 
 import('classes.plugins.PubIdPlugin');
 
-import('plugins.pubIds.nbn.classes.NnbDAO');
+import('plugins.pubIds.nbn.classes.NbnDAO');
 
 import('pages.search.SearchHandler');
 
@@ -29,6 +30,13 @@ define('NBN_API_URL', 'http://nbn.depositolegale.it/test/nbn_generator.pl');
 define('NBN_CONFIGERROR_SETTINGS', 0x01);
 
 class NBNPubIdPlugin extends PubIdPlugin {
+   
+   //
+   // Constructor
+   //
+   function NBNPubIdPlugin() {
+      parent::PubIdPlugin();
+   }   
    
    //
    // Implement template methods from PKPPlugin.
@@ -163,18 +171,20 @@ class NBNPubIdPlugin extends PubIdPlugin {
 
       // Reagistration without account .
       $username = $this->getSetting($journal->getId(), 'username');
-      $password = $this->getSetting($journal->getId(), 'username');
+      $password = $this->getSetting($journal->getId(), 'password');
       $templateMgr->assign('hasCredentials', !(empty($username) && empty($password)));        
            
       // Paginate articles.
       $rangeInfo = Handler::getRangeInfo('articles');
-     
       $search = $request->getUserVar('search');
+      
+      $editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
+      
       // If a search was performed, get the necessary info.      
-      if(!empty($search)){
-         $editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
+      if(!empty($search)){         
          
          // Get the user's search conditions, if any
+         $searchField = (int)$request->getUserVar('searchField');
          $searchField = $request->getUserVar('searchField');
          $searchMatch = $request->getUserVar('searchMatch');
          
@@ -197,11 +207,12 @@ class NBNPubIdPlugin extends PubIdPlugin {
             $sort,
             $sortDirection
          );
-         $articles = new DAOResultFactory($rawSubmissions, $editorSubmissionDao, '_returnEditorSubmissionFromRow', array('article_id'));
-
-         foreach($articles->records as $article){
-            $articleIds[] = $article[0];
-         }                     
+         $articles = new DAOResultFactory($rawSubmissions, $editorSubmissionDao, '_returnEditorSubmissionFromRow', array('article_id'));       
+         
+		 while ($article =& $articles->next()) {
+            $articleIds[] = $article->getId();
+            unset($article); // Safer, because we're using references
+         }
       }else{         
          // Retrieve all published articles.
          $publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $publishedArticleDao PublishedArticleDAO */
@@ -209,13 +220,25 @@ class NBNPubIdPlugin extends PubIdPlugin {
       }
 
       // Whether filter is on, show only not registered articles.
-      $filter = $request->getUserVar('registeredFilter');
-      if(!empty($filter)){
+      $filter        = $request->getUserVar('registeredFilter');
+      $filterForm    = $request->getUserVar('filterForm');
+      $filterChecked = $request->getUserVar('registeredFilterChecked');
+      if(!empty($filter) && $filterForm){
+         $registeredFilter = true;   
+      }elseif($filterChecked && empty($filterForm)){
+         $registeredFilter = true;
+      }else{
+         $registeredFilter = false;
+      }
+      if($registeredFilter){
          foreach($articleIds as $index => $articleId){
             if($this->isRegistered($articleId, $journal->getId())){
                unset($articleIds[$index]);   
             }   
          }
+         $templateMgr->assign('registeredFilterChecked', 'checked="checked"');
+      }else{
+         $templateMgr->assign('registeredFilterChecked', '');
       }
       
       $totalArticles = count($articleIds);
@@ -240,9 +263,10 @@ class NBNPubIdPlugin extends PubIdPlugin {
     * @return array
     */
    function _getSearchFieldOptions() {
+
       return array(
-         3 => 'article.title',
-         1 => 'user.role.author'
+         SUBMISSION_FIELD_TITLE => 'article.title',
+         SUBMISSION_FIELD_AUTHOR => 'user.role.author'
       );
    }   
 

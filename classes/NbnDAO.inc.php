@@ -4,6 +4,7 @@
  * @file plugins/pubIds/nbn/classes/NbnDAO.inc.php
  *
  * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NbnDAO
@@ -30,10 +31,12 @@ class NbnDAO extends DAO {
     */   
    function getNBN($articleId, $journalId){
       $params = array(         
-         $articleId,
-         $journalId
+         (int)$articleId,
+         (int)$journalId
       );
-      $sql = "SELECT article_id, subnamespace||'-'||assigned_string as urn
+      
+      $nbn = $this->concat('subnamespace', '\'-\'', 'assigned_string');
+      $sql = "SELECT article_id, $nbn as nbn
               FROM nbn_assigned_string as nas join nbn_journal_subnamespace as njs on nas.journal_id = njs.journal_id
               WHERE article_id = ? AND njs.journal_id = ?";
               
@@ -62,8 +65,8 @@ class NbnDAO extends DAO {
                      VALUES (?, ?, ?)',
 				
 			array(
-				$articleId,
-            $journalId,
+				(int)$articleId,
+            (int)$journalId,
             $assignedString
 			)
 		);
@@ -73,7 +76,8 @@ class NbnDAO extends DAO {
    
    /**
     * Insert a new Journal Sub-namespace.
-    * @param $article Article
+    * @param $journalId int
+    * @param $journalNamespace string Journal sub-namespace
     */
    function insertJournalNamespace($journalId, $journalNamespace) {
       $returner = $this->update(
@@ -82,7 +86,7 @@ class NbnDAO extends DAO {
                      VALUES (?, ?);',
             
          array(
-            $journalId,
+            (int)$journalId,
             $journalNamespace
          )
       );
@@ -103,7 +107,7 @@ class NbnDAO extends DAO {
          FROM nbn_journal_subnamespace 
          WHERE journal_id = ? ',
          array(
-            (int) $journalId
+            (int)$journalId
          )
       );
       $returner = $result->fields[0] ? true : false;

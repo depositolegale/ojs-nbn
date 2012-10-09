@@ -1,12 +1,13 @@
 <?php
 
 /**
- * @file plugins/pubIds/urn/URNSettingsForm.inc.php
+ * @file plugins/pubIds/nbn/URNSettingsForm.inc.php
  *
  * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * @class URNSettingsForm
+ * @class NBNSettingsForm
  * @ingroup plugins_pubIds_nbn
  *
  * @brief Form for journal managers to setup NBN plugin
@@ -23,7 +24,7 @@ class NBNSettingsForm extends Form {
    /** @var integer */
    var $_journalId;
 
-   /** @var URNCileaPlugin */
+   /** @var NBNPubIdPlugin */
    var $_plugin;
 
    //
@@ -31,7 +32,7 @@ class NBNSettingsForm extends Form {
    //
    /**
     * Constructor
-    * @param $plugin URNCileaPlugin
+    * @param $plugin NBNPubIdPlugin
     * @param $journalId integer
     */
    function NBNSettingsForm(&$plugin, $journalId) {
@@ -84,7 +85,6 @@ class NBNSettingsForm extends Form {
       return array(
          'username' => 'string',
          'password' => 'string'
-         //'urnPrefix' => 'string'
       );
    }
    

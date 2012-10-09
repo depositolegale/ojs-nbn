@@ -5,9 +5,10 @@
  */
 
 /**
- * @file plugins/pubIds/urn/index.php
+ * @file plugins/pubIds/nbn/index.php
  *
- * Copyright (c) 2012 Cilea
+ * Copyright (c) 2003-2012 John Willinsky
+ * Contributed by CILEA
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup plugins_pubIds_nbn

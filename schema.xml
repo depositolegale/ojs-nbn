@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schema SYSTEM "../../../lib/pkp/dtd/xmlSchema.dtd">
+
+<!--
+  * plugins/pubIds/nbn/schema.xml
+  *
+  * Copyright (c) 2003-2012 John Willinsky
+  * Contributed by CILEA
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  *
+  * NBN plugin schema in XML.
+  *
+  -->
+
+<schema version="0.2">
+
+	<!--
+	 *
+	 * TABLE nbn_journal_subnamespace 
+	 *
+	 -->
+	<table name="nbn_journal_subnamespace">
+      <field name="journal_id" type="I8">
+         <KEY />
+         <NOTNULL/>
+      </field>
+		<field name="subnamespace" type="C2" size="255">
+			<NOTNULL/>
+		</field>
+		<descr>Sub-namespace assigned to Journal.</descr>
+	</table>
+
+   <!--
+    *
+    * TABLE nbn_assigned_string 
+    *
+    -->
+   <table name="nbn_assigned_string">
+      <field name="article_id" type="I8">
+         <KEY />
+         <NOTNULL/>
+      </field>      
+      <field name="journal_id" type="I8">
+         <NOTNULL/>
+      </field>
+      <field name="assigned_string" type="C2" size="255">
+         <NOTNULL/>
+      </field>
+      <descr>Article assigned string.</descr>
+   </table>   
+   
+</schema>
