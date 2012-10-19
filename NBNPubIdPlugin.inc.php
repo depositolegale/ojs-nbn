@@ -126,10 +126,10 @@ class NBNPubIdPlugin extends PubIdPlugin {
       $pubObjectType = $this->getPubObjectType($pubObject);
      
       // NBNs are not enabled for issues and Galleys
-      if ($pubObjectType == 'Issue' || $pubObjectType == 'Galley') return null;
-            
+      if ($pubObjectType == 'Issue' || $pubObjectType == 'Galley' || $pubObjectType == 'SuppFile') return null;
+      
       $journalId = $pubObject->getJournalId();
-      $articleId = $pubObject->getPublishedArticleId();
+      $articleId = $pubObject->getId();
       $nbnDAO = new NbnDAO();
       $nbn = $nbnDAO->getNBN($articleId, $journalId);
       unset($nbnDAO);
