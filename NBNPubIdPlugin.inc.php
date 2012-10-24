@@ -24,7 +24,7 @@ import('pages.search.SearchHandler');
 import('classes.oai.ojs.JournalOAI');
 
 // NBN API
-define('NBN_API_URL', 'http://nbn.depositolegale.it/test/nbn_generator.pl');
+define('NBN_API_URL', 'http://nbn.depositolegale.it/api/nbn_generator.pl');
 
 // Configuration errors.
 define('NBN_CONFIGERROR_SETTINGS', 0x01);
